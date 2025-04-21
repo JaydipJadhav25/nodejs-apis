@@ -1,27 +1,22 @@
 import express from "express"
 const app = express();
-import mongoose from "mongoose";
+import { connectDB } from "./db/dbconnection.js";
+import userRouter from "./routes/user.routes.js"
+import cors from "cors"
 
 
-mongoose.connect("mongodb+srv://jaydipjadhavdev:jaydipjadhavdev@cluster0.7b9j0.mongodb.net/test")
-.then(()=>{
- console.log("database connected❤️")
-})
-.catch((err)=>{
+connectDB()
 
- console.log("database connected Error !");
-
-
-});
-
-
-
+app.use(express.json());
+app.use(express.urlencoded({extended : true}));
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("Hello, Vercel!");
 });
 
 
+app.use("/user" , userRouter);
 
 app.get("/name/:name", (req, res) => {
     const name = req.params.name; // Correctly extracting the route parameter
